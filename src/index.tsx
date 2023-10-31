@@ -1,5 +1,7 @@
 import { NativeModules, Platform } from 'react-native';
 
+export * from './banner'
+
 const LINKING_ERROR =
   `The package 'adrop-ads-react-native' doesn't seem to be linked. Make sure: \n\n` +
   Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
@@ -16,10 +18,6 @@ const AdropAds = NativeModules.AdropAds
         },
       }
     );
-
-export function multiply(a: number, b: number): Promise<number> {
-  return AdropAds.multiply(a, b);
-}
 
 export function initialize(production: boolean): Promise<void> {
   return AdropAds.initialize(production);

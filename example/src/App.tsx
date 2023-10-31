@@ -1,19 +1,84 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply, initialize } from 'adrop-ads-react-native';
+import { StyleSheet, View, Button, Platform } from 'react-native';
+import { initialize, AdropBanner, AdropBannerController } from 'adrop-ads-react-native';
+import { useEffect, useMemo, useState } from 'react';
+
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [bannerController, setBannerController] = useState<AdropBannerController>();
+  const [bannerController1, setBanner1Controller] = useState<AdropBannerController>();
 
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
+  useEffect(() => {
     initialize(false);
   }, []);
 
+  const unitId = useMemo(() => {
+    switch (Platform.OS) {
+      case 'android':
+        return '01HD5R49SJGY7KKEP9MK8DYEN7';
+      case 'ios':
+        return '01HD5R54R6TDK91Y78M0J0SVCV';
+      default:
+        return '';
+    }
+  }, [Platform.OS]);
+
+  const onAdBannerCreated = (controller?: AdropBannerController) => {
+    setBannerController(controller);
+  };
+
+  const onAdBanner1Created = (controller?: AdropBannerController) => {
+    setBanner1Controller(controller);
+  };
+
+  const load = () => {
+    bannerController?.load();
+  };
+
+  const load1 = () => {
+    bannerController1?.load();
+  };
+
+  const onAdClicked = () => {
+    console.log('banner clicked');
+  };
+
+  const onAdReceived = () => {
+    console.log('banner received');
+  };
+
+  const onAdFailedToReceive = () => {
+    console.log('banner onAdFailedToReceive');
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Button title={'Request Ad!'}
+              onPress={load} />
+
+      <View style={{ width: '100%', height: 50, backgroundColor: 'green' }}>
+        <AdropBanner unitId={unitId}
+                     style={{ height: 80 }}
+                     onCreated={onAdBannerCreated}
+                     onAdClicked={onAdClicked}
+                     onAdReceived={onAdReceived}
+                     onAdFailedToReceive={onAdFailedToReceive}
+        />
+      </View>
+
+
+      <Button title={'Request test Ad!'}
+              onPress={load1} />
+      <View style={{ width: '100%', height: 50, backgroundColor: 'green' }}>
+        <AdropBanner unitId={'ADROP_PUBLIC_TEST_UNIT_ID'}
+                     style={{ height: 80 }}
+                     onCreated={onAdBanner1Created}
+                     onAdClicked={onAdClicked}
+                     onAdReceived={onAdReceived}
+                     onAdFailedToReceive={onAdFailedToReceive}
+        />
+      </View>
     </View>
   );
 }
