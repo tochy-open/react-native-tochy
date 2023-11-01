@@ -57,24 +57,28 @@ export default function App() {
       <Button title={'Request Ad!'}
               onPress={load} />
 
-        <AdropBanner unitId={unitId}
-                     style={{ width:"100%", height: 80 }}
-                     onCreated={onAdBannerCreated}
-                     onAdClicked={onAdClicked}
-                     onAdReceived={onAdReceived}
-                     onAdFailedToReceive={onAdFailedToReceive}
-        />
+      <View style={{ width: '100%', height: 50, backgroundColor: 'green' }}>
+      <AdropBanner unitId={unitId}
+                   style={{ width: '100%', height: 80 }}
+                   onCreated={onAdBannerCreated}
+                   onAdClicked={onAdClicked}
+                   onAdReceived={onAdReceived}
+                   onAdFailedToReceive={onAdFailedToReceive}
+      />
 
+      </View>
 
-        <Button title={'Request test Ad!'}
+      <Button title={'Request test Ad!'}
               onPress={load1} />
+      <View style={{ width: '60%', height: 80, backgroundColor: 'green', overflow: 'hidden'}}>
         <AdropBanner unitId={'ADROP_PUBLIC_TEST_UNIT_ID'}
-                     style={{ width:"100%", height: 80 }}
+                     style={{ width: '100%', height: 120 }}
                      onCreated={onAdBanner1Created}
                      onAdClicked={onAdClicked}
                      onAdReceived={onAdReceived}
                      onAdFailedToReceive={onAdFailedToReceive}
         />
+      </View>
     </View>
   );
 }

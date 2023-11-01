@@ -9,8 +9,9 @@ import React
 import AdropAds
 
 @objc
-class AdropBannerViewWrapper: UIView, AdropBannerDelegate {
+class AdropBannerViewWrapper: RCTView, AdropBannerDelegate {
     var bridge: RCTBridge
+    var banner: AdropBanner?
     
     func onAdReceived(_ banner: AdropBanner) {
         print("onAdReceived!")
@@ -26,26 +27,28 @@ class AdropBannerViewWrapper: UIView, AdropBannerDelegate {
         print("onAdFailedToReceive!")
         sendEvent(banner.tag, method: AdropMethod.DID_FAIL_TO_RECEIVE_AD, value: error.rawValue)
     }
+    
     init (bridge: RCTBridge){
         self.bridge = bridge
         super.init(frame: .zero)
     }
-
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.banner?.frame = frame
+    }
+    
     @objc
-    func setConfig(_ config: NSDictionary) {
-        if let unitId = config["unitId"], let height = config["height"] {
-            let banner = AdropBanner(unitId: unitId as! String)
-            banner.delegate = self
-
-            banner.frame = CGRect(x:0, y:0, width: 350, height: height as! Int)
-            self.addSubview(banner)
-            banner.load()
-        }
+    func setUnitId(_ unitId: NSString) {
+        banner = AdropBanner(unitId: unitId as! String)
+        banner?.delegate = self
+        self.addSubview(banner!)
+        
+        bridge.eventDispatcher().sendAppEvent(withName: AdropChannel.METHOD_BANNER_CHANNEL, body: [self.reactTag])
     }
     
     

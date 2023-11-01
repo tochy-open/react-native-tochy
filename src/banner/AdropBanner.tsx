@@ -21,7 +21,7 @@ type AdropBannerProp = AdropBannerNativeProp & {
 
 const ComponentName = 'AdropBannerView';
 
-const BannerView = requireNativeComponent<{ config: { unitId: string, height: number} }>(ComponentName);
+const BannerView = requireNativeComponent<AdropBannerNativeProp>(ComponentName);
 
 const AdropBanner: React.FC<AdropBannerProp> = (
   {
@@ -52,7 +52,8 @@ const AdropBanner: React.FC<AdropBannerProp> = (
   return (
     <BannerView
       ref={bannerRef}
-      config={{unitId, height: style.height }}
+      style={style}
+      unitId={unitId}
     />
   );
 
