@@ -48,7 +48,9 @@ class AdropBannerViewWrapper: RCTView, AdropBannerDelegate {
                                               body: self.reactTag)
     }
     
-//    @objc override static func load(){ self.load() }
+    func load() {
+        self.banner?.load()
+    }
     
     private func sendEvent(method: String, value: String?) {
         let channel = AdropChannel.methodBannerChannelOf(id: self.reactTag as! Int)
