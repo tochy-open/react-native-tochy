@@ -8,7 +8,7 @@ import { AdropChannel } from '../bridge/AdropChannel';
 
 
 type AdropBannerNativeProp = {
-  style: { height: number, width: any },
+  style: { height: number, width: number },
   unitId: string,
 }
 
@@ -21,7 +21,7 @@ type AdropBannerProp = AdropBannerNativeProp & {
 
 const ComponentName = 'AdropBannerView';
 
-const BannerView = requireNativeComponent<{ config: { unitId: string, height: number} }>(ComponentName);
+const BannerView = requireNativeComponent<{ config: { unitId: string, width: number, height: number} }>(ComponentName);
 
 const AdropBanner: React.FC<AdropBannerProp> = (
   {
@@ -52,7 +52,7 @@ const AdropBanner: React.FC<AdropBannerProp> = (
   return (
     <BannerView
       ref={bannerRef}
-      config={{unitId, height: style.height }}
+      config={{unitId, width: style.width, height: style.height }}
     />
   );
 

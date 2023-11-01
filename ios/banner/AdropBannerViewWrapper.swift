@@ -38,11 +38,10 @@ class AdropBannerViewWrapper: UIView, AdropBannerDelegate {
     
     @objc
     func setConfig(_ config: NSDictionary) {
-        if let unitId = config["unitId"], let height = config["height"] {
+        if let unitId = config["unitId"], let width = config["width"], let height = config["height"] {
             let banner = AdropBanner(unitId: unitId as! String)
             banner.delegate = self
-
-            banner.frame = CGRect(x:0, y:0, width: 350, height: height as! Int)
+            banner.frame = CGRect(x:0, y:0, width:width as! Int, height: height as! Int)
             self.addSubview(banner)
             banner.load()
         }
