@@ -65,16 +65,15 @@ export default function App() {
         />
       </View>
 
-
-        <Button title={'Request test Ad!'}
+      <Button title={'Request test Ad!'}
               onPress={load1} />
-      <View style={{ width: '100%', height: 50, backgroundColor: 'green' }} onTouchStart={() => console.log("click")}>
-      <AdropBanner unitId={'ADROP_PUBLIC_TEST_UNIT_ID'}
-                   style={{ width: Dimensions.get('window').width, height: 80 }}
-                   onCreated={onAdBanner1Created}
-                   onAdClicked={onAdClicked}
-                   onAdReceived={onAdReceived}
-                   onAdFailedToReceive={onAdFailedToReceive}
+      <View style={{ width: '60%', height: 80, backgroundColor: 'green', overflow: 'hidden'}}>
+        <AdropBanner unitId={'ADROP_PUBLIC_TEST_UNIT_ID'}
+                     style={{ width: '100%', height: 120 }}
+                     onCreated={onAdBanner1Created}
+                     onAdClicked={onAdClicked}
+                     onAdReceived={onAdReceived}
+                     onAdFailedToReceive={onAdFailedToReceive}
         />
       </View>
     </View>

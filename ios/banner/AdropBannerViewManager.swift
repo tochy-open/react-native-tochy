@@ -5,31 +5,32 @@ import UIKit
 
 @objc(AdropBannerViewManager)
 class AdropBannerViewManager: RCTViewManager {
-    static let REACT_CLASS = "AdropBannerView"
-    var wrapperView: AdropBannerViewWrapper?
-
-    override static func moduleName() -> String {
-      return REACT_CLASS
-    }
+    var wrapperView:AdropBannerViewWrapper?
     
     override static func requiresMainQueueSetup() -> Bool {
-        print("!!requiresMainQueueSetup")
         return true
     }
     
-    override func view() -> UIView! {
+    override func view() -> AdropBannerViewWrapper? {
         wrapperView = AdropBannerViewWrapper(bridge: self.bridge)
+//        self.bannerDict[wrapper.reactTag as! Int] = wrapper
         return wrapperView
     }
     
-    @objc func load(_ reactTag: NSNumber) {
-        wrapperView?.load()
-    }
+//    @objc func load(_ reactTag: NSNumber) {
+//        if self.bridge.uiManager.view(forReactTag: reactTag) is AdropBannerViewWrapper {
+//            wrapperView.load()
+//    //
+//        }
+//        wrapperView.load()
+//        print("reactTag \(reactTag)")
+//        print("wrapperView?.reactTag \(wrapperView?.reactTag)")
         
-    @objc func receiveCommand(_ reactTag: NSNumber, commandName: String, params: [Any]?) {
-      if commandName == "customCommand" {
-        // 처리할 코드를 여기에 작성
-        print("Received custom command with parameters: \(params ?? [])")
-      }
+//        print("bannerDict \(bannerDict)")
+//        self.bannerDict[Int(reactTag)]?.load()
+     
+//        if reactTag == wrapperView?.reactTag {
+//            wrapperView?.load()
+//        }
     }
 }
