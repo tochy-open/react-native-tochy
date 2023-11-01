@@ -13,7 +13,6 @@ class AdropAds: NSObject {
         DispatchQueue.main.async {
             Adrop.initialize(production: production)
         }
-       
     }
     
 }

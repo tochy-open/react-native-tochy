@@ -39,6 +39,7 @@ const AdropBanner: React.FC<AdropBannerProp> = (
   useEffect(() => {
     const eventListener = DeviceEventEmitter.addListener(AdropChannel.methodBannerChannel, (id) => {
       let viewId = findNodeHandle(bannerRef.current) ?? 0;
+      console.log(`eventListener:: id:${id} , viewId: ${viewId}`)
       if (id === viewId) {
         onCreated(new AdropBannerController(viewId, onAdReceived, onAdFailedToReceive, onAdClicked));
       }

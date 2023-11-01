@@ -26,6 +26,7 @@ class AdropBannerController {
     this._onAdClicked = onAdClicked;
 
     this.listener = DeviceEventEmitter.addListener(this.channel, (event) => {
+      console.log("listener called: ",event)
       switch (event.method) {
         case AdropMethod.didReceiveAd:
           this._onAdReceived()
@@ -42,6 +43,7 @@ class AdropBannerController {
   }
 
   public load() {
+    console.log("load@@", this.tag)
     UIManager.dispatchViewManagerCommand(this.tag, 'load', []);
   }
 

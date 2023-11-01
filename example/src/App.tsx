@@ -57,11 +57,11 @@ export default function App() {
               onPress={load} />
       <View style={{ width: '100%', height: 50, backgroundColor: 'green' }}>
       <AdropBanner unitId={unitId}
-                     style={{ width: Dimensions.get('window').width, height: 80 }}
-                     onCreated={onAdBannerCreated}
-                     onAdClicked={onAdClicked}
-                     onAdReceived={onAdReceived}
-                     onAdFailedToReceive={onAdFailedToReceive}
+                   style={{ width: Dimensions.get('window').width, height: 80 }}
+                   onCreated={onAdBannerCreated}
+                   onAdClicked={onAdClicked}
+                   onAdReceived={onAdReceived}
+                   onAdFailedToReceive={onAdFailedToReceive}
         />
       </View>
 
@@ -70,11 +70,11 @@ export default function App() {
               onPress={load1} />
       <View style={{ width: '100%', height: 50, backgroundColor: 'green' }} onTouchStart={() => console.log("click")}>
       <AdropBanner unitId={'ADROP_PUBLIC_TEST_UNIT_ID'}
-                     style={{ width: Dimensions.get('window').width, height: 80 }}
-                     onCreated={onAdBanner1Created}
-                     onAdClicked={onAdClicked}
-                     onAdReceived={onAdReceived}
-                     onAdFailedToReceive={onAdFailedToReceive}
+                   style={{ width: Dimensions.get('window').width, height: 80 }}
+                   onCreated={onAdBanner1Created}
+                   onAdClicked={onAdClicked}
+                   onAdReceived={onAdReceived}
+                   onAdFailedToReceive={onAdFailedToReceive}
         />
       </View>
     </View>
