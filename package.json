@@ -158,5 +158,8 @@
         }
       ]
     ]
+  },
+  "dependencies": {
+    "@typescript-eslint/typescript-estree": "latest"
   }
 }
