@@ -1,14 +1,14 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Button, Dimensions } from 'react-native';
-import { initialize, AdropBanner, AdropBannerController } from 'adrop-ads-react-native';
+import { AdropAds, AdropBanner, AdropBannerController } from 'adrop-ads-react-native';
 import { useEffect, useState } from 'react';
 
 
 export default function App() {
   const [bannerController, setBannerController] = useState<AdropBannerController>();
   useEffect(() => {
-    initialize(false);
+    AdropAds.initialize(false);
   }, []);
 
   const onAdBannerCreated = (controller?: AdropBannerController) => {
