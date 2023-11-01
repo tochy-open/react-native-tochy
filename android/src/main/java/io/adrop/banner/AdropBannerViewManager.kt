@@ -1,8 +1,5 @@
 package io.adrop.banner
 
-import android.util.Log
-import android.view.View
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableArray
@@ -10,7 +7,6 @@ import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
-import com.facebook.react.uimanager.annotations.ReactPropGroup
 import io.adrop.ads.banner.AdropBanner
 import io.adrop.ads.banner.AdropBannerListener
 import io.adrop.ads.model.AdropErrorCode

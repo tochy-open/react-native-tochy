@@ -1,42 +1,22 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Button, Platform, Dimensions } from 'react-native';
-import { initialize, AdropBanner, AdropBannerController } from 'adrop-ads-react-native';
-import { useEffect, useMemo, useState } from 'react';
+import { StyleSheet, View, Button, Dimensions } from 'react-native';
+import { AdropAds, AdropBanner, AdropBannerController } from 'adrop-ads-react-native';
+import { useEffect, useState } from 'react';
 
 
 export default function App() {
   const [bannerController, setBannerController] = useState<AdropBannerController>();
-  const [bannerController1, setBanner1Controller] = useState<AdropBannerController>();
   useEffect(() => {
-    initialize(false);
+    AdropAds.initialize(false);
   }, []);
-
-  const unitId = useMemo(() => {
-    switch (Platform.OS) {
-      case 'android':
-        return '01HD5R49SJGY7KKEP9MK8DYEN7';
-      case 'ios':
-        return '01HD5R54R6TDK91Y78M0J0SVCV';
-      default:
-        return '';
-    }
-  }, [Platform.OS]);
 
   const onAdBannerCreated = (controller?: AdropBannerController) => {
     setBannerController(controller);
   };
 
-  const onAdBanner1Created = (controller?: AdropBannerController) => {
-    setBanner1Controller(controller);
-  };
-
   const load = () => {
     bannerController?.load();
-  };
-
-  const load1 = () => {
-    bannerController1?.load();
   };
 
   const onAdClicked = () => {
@@ -55,22 +35,11 @@ export default function App() {
     <View style={styles.container}>
       <Button title={'Request Ad!'}
               onPress={load} />
-      <View style={{ width: '100%', height: 50, backgroundColor: 'green' }}>
-      <AdropBanner unitId={unitId}
-                   style={{ width: Dimensions.get('window').width, height: 80 }}
-                   onCreated={onAdBannerCreated}
-                   onAdClicked={onAdClicked}
-                   onAdReceived={onAdReceived}
-                   onAdFailedToReceive={onAdFailedToReceive}
-        />
-      </View>
 
-      <Button title={'Request test Ad!'}
-              onPress={load1} />
-      <View style={{ width: '60%', height: 80, backgroundColor: 'green', overflow: 'hidden'}}>
+      <View style={{ width: '100%', height: 50 }}>
         <AdropBanner unitId={'ADROP_PUBLIC_TEST_UNIT_ID'}
-                     style={{ width: '100%', height: 120 }}
-                     onCreated={onAdBanner1Created}
+                     style={{ width: Dimensions.get('window').width, height: 80 }}
+                     onCreated={onAdBannerCreated}
                      onAdClicked={onAdClicked}
                      onAdReceived={onAdReceived}
                      onAdFailedToReceive={onAdFailedToReceive}
@@ -84,7 +53,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
   box: {
     width: 60,
