@@ -36,16 +36,11 @@ class AdropBannerViewManager(private val context: ReactApplicationContext) :
     @ReactProp(name = "unitId")
     fun setUnitId(view: AdropBanner, unitId: String) {
         view.setUnitId(unitId)
-
-        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-            .emit(AdropChannel.METHOD_BANNER_CHANNEL, Arguments.createMap().apply {
-                putString("method", AdropMethod.DID_CREATED_AD_BANNER)
-                putInt("tag", view.id)
-            })
+        sendEvent(view.id, AdropMethod.DID_CREATED_AD_BANNER)
     }
 
     override fun onAdClicked(banner: AdropBanner) {
-        sendEvent(banner.id, AdropMethod.DID_CLICK_AD, null)
+        sendEvent(banner.id, AdropMethod.DID_CLICK_AD)
     }
 
     override fun onAdFailedToReceive(banner: AdropBanner, error: AdropErrorCode) {
@@ -53,10 +48,10 @@ class AdropBannerViewManager(private val context: ReactApplicationContext) :
     }
 
     override fun onAdReceived(banner: AdropBanner) {
-        sendEvent(banner.id, AdropMethod.DID_RECEIVE_AD, null)
+        sendEvent(banner.id, AdropMethod.DID_RECEIVE_AD)
     }
 
-    private fun sendEvent(viewTag: Int, method: String, value: String?) {
+    private fun sendEvent(viewTag: Int, method: String, value: String? = null) {
         val channel = AdropChannel.methodBannerChannelOf(viewTag)
 
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
@@ -64,6 +59,7 @@ class AdropBannerViewManager(private val context: ReactApplicationContext) :
                 putString("method", method)
                 putString("channel", channel)
                 putString("message", value)
+                putInt("tag", viewTag)
             })
     }
 

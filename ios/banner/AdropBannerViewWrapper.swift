@@ -14,15 +14,15 @@ class AdropBannerViewWrapper: RCTView, AdropBannerDelegate {
     var banner: AdropBanner?
     
     func onAdReceived(_ banner: AdropBanner) {
-        sendEvent(method: AdropMethod.DID_RECEIVE_AD, value: nil)
+        sendEvent(method: AdropMethod.DID_RECEIVE_AD)
     }
     
     func onAdClicked(_ banner: AdropBanner) {
-        sendEvent(method: AdropMethod.DID_CLICK_AD, value: nil)
+        sendEvent(method: AdropMethod.DID_CLICK_AD)
     }
     
     func onAdFailedToReceive(_ banner: AdropBanner, _ error: AdropErrorCode) {
-        sendEvent(method: AdropMethod.DID_FAIL_TO_RECEIVE_AD, value: error.rawValue)
+        sendEvent(method: AdropMethod.DID_FAIL_TO_RECEIVE_AD, message: error.rawValue)
     }
     
     init (bridge: RCTBridge) {
@@ -45,21 +45,18 @@ class AdropBannerViewWrapper: RCTView, AdropBannerDelegate {
         banner?.delegate = self
         self.addSubview(banner!)
         
-        if let eventEmitter = bridge.module(for: BannerEventEmitter.self) as? BannerEventEmitter {
-            eventEmitter.sendEvent(withName: AdropChannel.METHOD_BANNER_CHANNEL,
-                                   body: ["method": AdropMethod.DID_CREATED_BANNER, "tag": self.reactTag])
-        }
+        sendEvent(method: AdropMethod.DID_CREATED_BANNER)
     }
     
     func load() {
         self.banner?.load()
     }
     
-    private func sendEvent(method: String, value: String?) {
+    private func sendEvent(method: String, message: String? = nil) {
         let channel = AdropChannel.methodBannerChannelOf(id: self.reactTag as! Int)
         if let eventEmitter = bridge.module(for: BannerEventEmitter.self) as? BannerEventEmitter {
             eventEmitter.sendEvent(withName: AdropChannel.METHOD_BANNER_CHANNEL,
-                                   body: [ "method": method, "channel": channel, "message": value ?? "" ])
+                                   body: [ "method": method, "channel": channel, "message": message ?? "", "tag": self.reactTag ?? 0 ])
         }
     }
 }
