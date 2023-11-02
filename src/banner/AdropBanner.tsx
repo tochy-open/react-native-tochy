@@ -3,9 +3,11 @@ import {
     DeviceEventEmitter,
     findNodeHandle,
     requireNativeComponent,
+    NativeModules, NativeEventEmitter, Platform,
 } from 'react-native';
 import AdropBannerController from './AdropBannerController';
 import { AdropChannel } from '../bridge/AdropChannel';
+
 
 type AdropBannerNativeProp = {
     style: { height: number; width: number | string };
@@ -34,7 +36,7 @@ const AdropBanner: React.FC<AdropBannerProp> = ({
     const bannerRef = useRef(null);
 
     useEffect(() => {
-        const eventListener = DeviceEventEmitter.addListener(
+        const eventListener = Platform.OS === 'android' ? DeviceEventEmitter.addListener(
             AdropChannel.methodBannerChannel,
             (id: number) => {
                 if (id === findNodeHandle(bannerRef.current) ?? 0) {
@@ -43,15 +45,48 @@ const AdropBanner: React.FC<AdropBannerProp> = ({
                             id,
                             onAdReceived,
                             onAdFailedToReceive,
-                            onAdClicked
-                        )
+                            onAdClicked,
+                        ),
                     );
                 }
-            }
+            },
+        ) : new NativeEventEmitter(NativeModules.BannerEventEmitter).addListener(
+            AdropChannel.methodBannerChannel, (id: any) => {
+                if (id === findNodeHandle(bannerRef.current) ?? 0) {
+                    onCreated(
+                        new AdropBannerController(
+                            id,
+                            onAdReceived,
+                            onAdFailedToReceive,
+                            onAdClicked,
+                        ),
+                    );
+                }
+            },
         );
 
         return () => {
             eventListener.remove();
+        };
+    }, []);
+
+    useEffect(() => {
+        const nativeEventEmitter = new NativeEventEmitter(NativeModules.BannerEventEmitter).addListener(
+            AdropChannel.methodBannerChannel, (id: any) => {
+                if (id === findNodeHandle(bannerRef.current) ?? 0) {
+                    onCreated(
+                        new AdropBannerController(
+                            id,
+                            onAdReceived,
+                            onAdFailedToReceive,
+                            onAdClicked,
+                        ),
+                    );
+                }
+            },
+        );
+        return () => {
+            nativeEventEmitter.remove();
         };
     }, []);
 
