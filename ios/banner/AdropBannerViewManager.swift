@@ -16,11 +16,7 @@ class AdropBannerViewManager: RCTViewManager {
     
     @objc func load(_ reactTag: NSNumber) {
         DispatchQueue.main.async {
-            guard let uiManager = self.bridge.uiManager else {
-                return
-            }
-            
-            if let uiView = uiManager.view(forReactTag: reactTag),
+            if let uiView =  self.bridge.uiManager.view(forReactTag: reactTag),
                let banner = uiView as? AdropBannerViewWrapper {
                     banner.load()
             }
