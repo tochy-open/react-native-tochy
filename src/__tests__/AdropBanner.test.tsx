@@ -175,7 +175,7 @@ describe('AdropBanner Test', () => {
         checkStatus(AdropErrorCode.inactive)
     })
 
-    test.only('banner clicked', () => {
+    test('banner clicked', () => {
         render(<Example unitId={unitId} onClickLoad={onClickMock} />)
         DeviceEventEmitter.emit(AdropChannel.methodBannerChannel, { method: AdropMethod.didCreatedBanner, tag })
 
