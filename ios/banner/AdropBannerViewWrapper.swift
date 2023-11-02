@@ -47,7 +47,7 @@ class AdropBannerViewWrapper: RCTView, AdropBannerDelegate {
         
         if let eventEmitter = bridge.module(for: BannerEventEmitter.self) as? BannerEventEmitter {
             eventEmitter.sendEvent(withName: AdropChannel.METHOD_BANNER_CHANNEL,
-                                   body: self.reactTag)
+                                   body: ["method": AdropMethod.DID_CREATED_BANNER, "tag": self.reactTag])
         }
     }
     

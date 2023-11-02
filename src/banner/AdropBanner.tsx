@@ -2,10 +2,11 @@ import React, { useEffect, useRef } from 'react'
 import {
     findNodeHandle,
     requireNativeComponent,
-    NativeModules, NativeEventEmitter,
-} from 'react-native'
-import AdropBannerController from './AdropBannerController'
-import { AdropChannel } from '../bridge/AdropChannel'
+    NativeModules, NativeEventEmitter
+} from 'react-native';
+import AdropBannerController from './AdropBannerController';
+import { AdropChannel } from '../bridge/AdropChannel';
+import { AdropMethod } from '../bridge/AdropMethod'
 
 
 type AdropBannerNativeProp = {
@@ -37,25 +38,27 @@ const AdropBanner: React.FC<AdropBannerProp> = ({
     useEffect(() => {
 
         const eventListener = new NativeEventEmitter(NativeModules.BannerEventEmitter).addListener(
-            AdropChannel.methodBannerChannel, (id: any) => {
-                if (id === findNodeHandle(bannerRef.current) ?? 0) {
+            AdropChannel.methodBannerChannel, (event: any) => {
+                if (
+                    event.method === AdropMethod.didCreatedBanner &&
+                    (event.tag === findNodeHandle(bannerRef.current) ?? 0)) {
                     onCreated(
                         new AdropBannerController(
-                            id,
+                            event.tag,
                             onAdReceived,
                             onAdFailedToReceive,
                             onAdClicked,
                         ),
-                    )
+                    );
                 }
             },
-        )
+        );
 
         return () => {
             eventListener.remove()
         }
     }, [])
 
-    return <BannerView ref={bannerRef} style={style} unitId={unitId} />
-}
-export default AdropBanner
+    return <BannerView ref={bannerRef} style={style} unitId={unitId} />;
+};
+export default AdropBanner;

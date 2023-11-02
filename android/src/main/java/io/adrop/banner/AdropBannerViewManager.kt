@@ -38,7 +38,10 @@ class AdropBannerViewManager(private val context: ReactApplicationContext) :
         view.setUnitId(unitId)
 
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-            .emit(AdropChannel.METHOD_BANNER_CHANNEL, view.id)
+            .emit(AdropChannel.METHOD_BANNER_CHANNEL, Arguments.createMap().apply {
+                putString("method", AdropMethod.DID_CREATED_AD_BANNER)
+                putInt("tag", view.id)
+            })
     }
 
     override fun onAdClicked(banner: AdropBanner) {
