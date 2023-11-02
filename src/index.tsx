@@ -1,5 +1,5 @@
-import { NativeModules } from 'react-native';
+import { NativeModules } from 'react-native'
 
-export * from './banner';
-export * from './AdropErrorCode';
-export const AdropAds = NativeModules.AdropAds;
+export * from './banner'
+export * from './AdropErrorCode'
+export const AdropAds = NativeModules.AdropAds

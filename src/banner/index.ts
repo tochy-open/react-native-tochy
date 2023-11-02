@@ -1,4 +1,4 @@
-import AdropBanner from './AdropBanner';
-import AdropBannerController from './AdropBannerController';
+import AdropBanner from './AdropBanner'
+import AdropBannerController from './AdropBannerController'
 
-export { AdropBanner, AdropBannerController };
+export { AdropBanner, AdropBannerController }

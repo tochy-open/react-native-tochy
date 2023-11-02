@@ -1,39 +1,39 @@
-import * as React from 'react';
+import * as React from 'react'
 
-import { StyleSheet, View, Button, Dimensions } from 'react-native';
+import { StyleSheet, View, Button, Dimensions } from 'react-native'
 import {
     AdropAds,
     AdropBanner,
     AdropBannerController,
-} from 'adrop-ads-react-native';
-import { useEffect, useState } from 'react';
+} from 'adrop-ads-react-native'
+import { useEffect, useState } from 'react'
 
 export default function App() {
     const [bannerController, setBannerController] =
-        useState<AdropBannerController>();
+        useState<AdropBannerController>()
     useEffect(() => {
-        AdropAds.initialize(false);
-    }, []);
+        AdropAds.initialize(false)
+    }, [])
 
     const onAdBannerCreated = (controller?: AdropBannerController) => {
-        setBannerController(controller);
-    };
+        setBannerController(controller)
+    }
 
     const load = () => {
-        bannerController?.load();
-    };
+        bannerController?.load()
+    }
 
     const onAdClicked = () => {
-        console.log('banner clicked');
-    };
+        console.log('banner clicked')
+    }
 
     const onAdReceived = () => {
-        console.log('banner received');
-    };
+        console.log('banner received')
+    }
 
     const onAdFailedToReceive = () => {
-        console.log('banner onAdFailedToReceive');
-    };
+        console.log('banner onAdFailedToReceive')
+    }
 
     return (
         <View style={styles.container}>
@@ -53,7 +53,7 @@ export default function App() {
                 />
             </View>
         </View>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -68,4 +68,4 @@ const styles = StyleSheet.create({
         height: 60,
         marginVertical: 20,
     },
-});
+})

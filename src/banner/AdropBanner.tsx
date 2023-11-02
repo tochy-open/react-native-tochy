@@ -1,27 +1,27 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react'
 import {
     DeviceEventEmitter,
     findNodeHandle,
     requireNativeComponent,
-} from 'react-native';
-import AdropBannerController from './AdropBannerController';
-import { AdropChannel } from '../bridge/AdropChannel';
+} from 'react-native'
+import AdropBannerController from './AdropBannerController'
+import { AdropChannel } from '../bridge/AdropChannel'
 
 type AdropBannerNativeProp = {
-    style: { height: number; width: number | string };
-    unitId: string;
-};
+    style: { height: number; width: number | string }
+    unitId: string
+}
 
 type AdropBannerProp = AdropBannerNativeProp & {
-    onCreated: (controller?: AdropBannerController) => void;
-    onAdReceived: () => void;
-    onAdClicked: () => void;
-    onAdFailedToReceive: (error?: any) => void;
-};
+    onCreated: (controller?: AdropBannerController) => void
+    onAdReceived: () => void
+    onAdClicked: () => void
+    onAdFailedToReceive: (error?: any) => void
+}
 
-const ComponentName = 'AdropBannerView';
+const ComponentName = 'AdropBannerView'
 
-const BannerView = requireNativeComponent<AdropBannerNativeProp>(ComponentName);
+const BannerView = requireNativeComponent<AdropBannerNativeProp>(ComponentName)
 
 const AdropBanner: React.FC<AdropBannerProp> = ({
     unitId,
@@ -31,7 +31,7 @@ const AdropBanner: React.FC<AdropBannerProp> = ({
     onAdReceived,
     style,
 }) => {
-    const bannerRef = useRef(null);
+    const bannerRef = useRef(null)
 
     useEffect(() => {
         const eventListener = DeviceEventEmitter.addListener(
@@ -45,16 +45,16 @@ const AdropBanner: React.FC<AdropBannerProp> = ({
                             onAdFailedToReceive,
                             onAdClicked
                         )
-                    );
+                    )
                 }
             }
-        );
+        )
 
         return () => {
-            eventListener.remove();
-        };
-    }, []);
+            eventListener.remove()
+        }
+    }, [])
 
-    return <BannerView ref={bannerRef} style={style} unitId={unitId} />;
-};
-export default AdropBanner;
+    return <BannerView ref={bannerRef} style={style} unitId={unitId} />
+}
+export default AdropBanner
