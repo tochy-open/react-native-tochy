@@ -1,12 +1,16 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Button, Dimensions } from 'react-native';
-import { AdropAds, AdropBanner, AdropBannerController } from 'adrop-ads-react-native';
+import {
+  AdropAds,
+  AdropBanner,
+  AdropBannerController,
+} from 'adrop-ads-react-native';
 import { useEffect, useState } from 'react';
 
-
 export default function App() {
-  const [bannerController, setBannerController] = useState<AdropBannerController>();
+  const [bannerController, setBannerController] =
+    useState<AdropBannerController>();
   useEffect(() => {
     AdropAds.initialize(false);
   }, []);
@@ -33,16 +37,16 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Button title={'Request Ad!'}
-              onPress={load} />
+      <Button title={'Request Ad!'} onPress={load} />
 
       <View style={{ width: '100%', height: 50 }}>
-        <AdropBanner unitId={'ADROP_PUBLIC_TEST_UNIT_ID'}
-                     style={{ width: Dimensions.get('window').width, height: 80 }}
-                     onCreated={onAdBannerCreated}
-                     onAdClicked={onAdClicked}
-                     onAdReceived={onAdReceived}
-                     onAdFailedToReceive={onAdFailedToReceive}
+        <AdropBanner
+          unitId={'ADROP_PUBLIC_TEST_UNIT_ID'}
+          style={{ width: Dimensions.get('window').width, height: 80 }}
+          onCreated={onAdBannerCreated}
+          onAdClicked={onAdClicked}
+          onAdReceived={onAdReceived}
+          onAdFailedToReceive={onAdFailedToReceive}
         />
       </View>
     </View>
@@ -54,6 +58,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginVertical: 50,
   },
   box: {
     width: 60,

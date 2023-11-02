@@ -1,12 +1,12 @@
 package io.adrop
 
 import android.app.Application
-import io.adrop.bridge.AdropError
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import io.adrop.ads.Adrop
 import io.adrop.ads.model.AdropErrorCode
+import java.lang.Exception
 
 class AdropAdsModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
@@ -21,7 +21,7 @@ class AdropAdsModule(reactContext: ReactApplicationContext) :
     if (context is Application) {
       Adrop.initialize(context, production)
     } else {
-      throw AdropError(AdropErrorCode.ERROR_CODE_INITIALIZE)
+      throw Exception(AdropErrorCode.ERROR_CODE_INITIALIZE.name)
     }
   }
 

@@ -1,4 +1,4 @@
-import { DeviceEventEmitter, UIManager } from 'react-native';
+import { DeviceEventEmitter, type EmitterSubscription, UIManager } from 'react-native';
 import { AdropChannel } from '../bridge/AdropChannel';
 import { AdropMethod } from '../bridge/AdropMethod';
 
@@ -6,9 +6,9 @@ import { AdropMethod } from '../bridge/AdropMethod';
 class AdropBannerController {
 
   protected tag: number = 0;
-  private listener?: any;
+  private listener?: EmitterSubscription | any;
 
-  private readonly channel ;
+  private readonly channel;
   private readonly _onAdReceived: () => void;
   private readonly _onAdFailedReceive: (error?: any) => void;
   private readonly _onAdClicked: () => void;
@@ -28,14 +28,14 @@ class AdropBannerController {
     this.listener = DeviceEventEmitter.addListener(this.channel, (event) => {
       switch (event.method) {
         case AdropMethod.didReceiveAd:
-          this._onAdReceived()
-          break
+          this._onAdReceived();
+          break;
         case AdropMethod.didFailToReceiveAd:
-          this._onAdFailedReceive(event.message)
-          break
+          this._onAdFailedReceive(event.message);
+          break;
         case AdropMethod.didClickAd:
-          this._onAdClicked()
-          break
+          this._onAdClicked();
+          break;
       }
     });
     return this;

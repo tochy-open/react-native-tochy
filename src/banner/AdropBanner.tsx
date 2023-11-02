@@ -8,7 +8,7 @@ import { AdropChannel } from '../bridge/AdropChannel';
 
 
 type AdropBannerNativeProp = {
-  style: { height: number, width: any },
+  style: { height: number, width: number | string },
   unitId: string,
 }
 
@@ -30,18 +30,16 @@ const AdropBanner: React.FC<AdropBannerProp> = (
     onAdClicked,
     onAdFailedToReceive,
     onAdReceived,
-    style
+    style,
   },
 ) => {
 
   const bannerRef = useRef(null);
 
   useEffect(() => {
-    const eventListener = DeviceEventEmitter.addListener(AdropChannel.methodBannerChannel, (id) => {
-      let viewId = findNodeHandle(bannerRef.current) ?? 0;
-      console.log(`eventListener:: id:${id} , viewId: ${viewId}`)
-      if (id === viewId) {
-        onCreated(new AdropBannerController(viewId, onAdReceived, onAdFailedToReceive, onAdClicked));
+    const eventListener = DeviceEventEmitter.addListener(AdropChannel.methodBannerChannel, (id: number) => {
+      if (id === findNodeHandle(bannerRef.current) ?? 0) {
+        onCreated(new AdropBannerController(id, onAdReceived, onAdFailedToReceive, onAdClicked));
       }
     });
 
