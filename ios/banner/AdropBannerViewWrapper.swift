@@ -25,7 +25,7 @@ class AdropBannerViewWrapper: RCTView, AdropBannerDelegate {
         sendEvent(method: AdropMethod.DID_FAIL_TO_RECEIVE_AD, value: error.rawValue)
     }
     
-    init (bridge: RCTBridge){
+    init (bridge: RCTBridge) {
         self.bridge = bridge
         super.init(frame: .zero)
     }
