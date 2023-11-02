@@ -1,12 +1,11 @@
 import React, { useEffect, useRef } from 'react'
 import {
-    DeviceEventEmitter,
     findNodeHandle,
     requireNativeComponent,
-    NativeModules, NativeEventEmitter, Platform,
-} from 'react-native';
-import AdropBannerController from './AdropBannerController';
-import { AdropChannel } from '../bridge/AdropChannel';
+    NativeModules, NativeEventEmitter,
+} from 'react-native'
+import AdropBannerController from './AdropBannerController'
+import { AdropChannel } from '../bridge/AdropChannel'
 
 
 type AdropBannerNativeProp = {
@@ -36,21 +35,8 @@ const AdropBanner: React.FC<AdropBannerProp> = ({
     const bannerRef = useRef(null)
 
     useEffect(() => {
-        const eventListener = Platform.OS === 'android' ? DeviceEventEmitter.addListener(
-            AdropChannel.methodBannerChannel,
-            (id: number) => {
-                if (id === findNodeHandle(bannerRef.current) ?? 0) {
-                    onCreated(
-                        new AdropBannerController(
-                            id,
-                            onAdReceived,
-                            onAdFailedToReceive,
-                            onAdClicked,
-                        ),
-                    );
-                }
-            },
-        ) : new NativeEventEmitter(NativeModules.BannerEventEmitter).addListener(
+
+        const eventListener = new NativeEventEmitter(NativeModules.BannerEventEmitter).addListener(
             AdropChannel.methodBannerChannel, (id: any) => {
                 if (id === findNodeHandle(bannerRef.current) ?? 0) {
                     onCreated(
@@ -60,16 +46,16 @@ const AdropBanner: React.FC<AdropBannerProp> = ({
                             onAdFailedToReceive,
                             onAdClicked,
                         ),
-                    );
+                    )
                 }
             },
-        );
+        )
 
         return () => {
             eventListener.remove()
         }
     }, [])
 
-    return <BannerView ref={bannerRef} style={style} unitId={unitId} />;
-};
-export default AdropBanner;
+    return <BannerView ref={bannerRef} style={style} unitId={unitId} />
+}
+export default AdropBanner

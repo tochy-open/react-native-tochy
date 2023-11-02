@@ -57,8 +57,9 @@ class AdropBannerViewManager(private val context: ReactApplicationContext) :
         val channel = AdropChannel.methodBannerChannelOf(viewTag)
 
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-            .emit(channel, Arguments.createMap().apply {
+            .emit(AdropChannel.METHOD_BANNER_CHANNEL, Arguments.createMap().apply {
                 putString("method", method)
+                putString("channel", channel)
                 putString("message", value)
             })
     }

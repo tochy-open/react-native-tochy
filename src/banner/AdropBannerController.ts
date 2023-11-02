@@ -1,6 +1,5 @@
 import {
-    DeviceEventEmitter,
-    type EmitterSubscription, NativeEventEmitter, NativeModules, Platform,
+    type EmitterSubscription, NativeEventEmitter, NativeModules,
     UIManager,
 } from 'react-native'
 import { AdropChannel } from '../bridge/AdropChannel'
@@ -28,9 +27,10 @@ class AdropBannerController {
         this._onAdFailedReceive = onAdFailedReceive
         this._onAdClicked = onAdClicked
 
-        this.listener = Platform.OS === 'android' ? DeviceEventEmitter.addListener(
-            this.channel,
+        this.listener = new NativeEventEmitter(NativeModules.BannerEventEmitter).addListener(
+            AdropChannel.methodBannerChannel,
             (event) => {
+                if (event.channel !== this.channel) return
                 switch (event.method) {
                     case AdropMethod.didReceiveAd:
                         this._onAdReceived()
@@ -43,29 +43,13 @@ class AdropBannerController {
                         break
                 }
             },
-        ) : new NativeEventEmitter(NativeModules.BannerEventEmitter).addListener(
-            AdropChannel.methodBannerChannel,
-            (event) => {
-                if (event.channel !== this.channel) return;
-                switch (event.method) {
-                    case AdropMethod.didReceiveAd:
-                        this._onAdReceived();
-                        break;
-                    case AdropMethod.didFailToReceiveAd:
-                        this._onAdFailedReceive(event.message);
-                        break;
-                    case AdropMethod.didClickAd:
-                        this._onAdClicked();
-                        break;
-                }
-            },
-        );
+        )
 
-        return this;
+        return this
     }
 
     public load() {
-        UIManager.dispatchViewManagerCommand(this.tag, 'load', []);
+        UIManager.dispatchViewManagerCommand(this.tag, 'load', [])
     }
 
     destroy() {
