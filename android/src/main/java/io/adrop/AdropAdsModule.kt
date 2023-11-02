@@ -9,23 +9,23 @@ import io.adrop.ads.model.AdropErrorCode
 import java.lang.Exception
 
 class AdropAdsModule(reactContext: ReactApplicationContext) :
-  ReactContextBaseJavaModule(reactContext) {
+    ReactContextBaseJavaModule(reactContext) {
 
-  override fun getName(): String {
-    return NAME
-  }
-
-  @ReactMethod
-  fun initialize(production: Boolean) {
-    val context = reactApplicationContext.applicationContext
-    if (context is Application) {
-      Adrop.initialize(context, production)
-    } else {
-      throw Exception(AdropErrorCode.ERROR_CODE_INITIALIZE.name)
+    override fun getName(): String {
+        return NAME
     }
-  }
 
-  companion object {
-    const val NAME = "AdropAds"
-  }
+    @ReactMethod
+    fun initialize(production: Boolean) {
+        val context = reactApplicationContext.applicationContext
+        if (context is Application) {
+            Adrop.initialize(context, production)
+        } else {
+            throw Exception(AdropErrorCode.ERROR_CODE_INITIALIZE.name)
+        }
+    }
+
+    companion object {
+        const val NAME = "AdropAds"
+    }
 }
