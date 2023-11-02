@@ -14,7 +14,7 @@ class AdropBannerViewWrapper: RCTView, AdropBannerDelegate {
     var banner: AdropBanner?
     
     func onAdReceived(_ banner: AdropBanner) {
-        sendEvent( method: AdropMethod.DID_RECEIVE_AD, value: nil)
+        sendEvent(method: AdropMethod.DID_RECEIVE_AD, value: nil)
     }
     
     func onAdClicked(_ banner: AdropBanner) {
@@ -44,8 +44,11 @@ class AdropBannerViewWrapper: RCTView, AdropBannerDelegate {
         banner = AdropBanner(unitId: unitId as String)
         banner?.delegate = self
         self.addSubview(banner!)
-        bridge.eventDispatcher().sendAppEvent(withName: AdropChannel.METHOD_BANNER_CHANNEL,
-                                              body: self.reactTag)
+        
+        if let eventEmitter = bridge.module(for: BannerEventEmitter.self) as? BannerEventEmitter {
+            eventEmitter.sendEvent(withName: AdropChannel.METHOD_BANNER_CHANNEL,
+                                   body: self.reactTag)
+        }
     }
     
     func load() {
@@ -54,7 +57,21 @@ class AdropBannerViewWrapper: RCTView, AdropBannerDelegate {
     
     private func sendEvent(method: String, value: String?) {
         let channel = AdropChannel.methodBannerChannelOf(id: self.reactTag as! Int)
-        bridge.eventDispatcher().sendAppEvent(withName: channel, body: [
-            "method": method, "message": value ?? ""])
+        if let eventEmitter = bridge.module(for: BannerEventEmitter.self) as? BannerEventEmitter {
+            eventEmitter.sendEvent(withName: AdropChannel.METHOD_BANNER_CHANNEL,
+                                   body: [ "method": method, "channel": channel, "message": value ?? "" ])
+        }
     }
+}
+
+
+@objc(BannerEventEmitter)
+class BannerEventEmitter: RCTEventEmitter {
+    override class func requiresMainQueueSetup() -> Bool {
+        return true
+    }
+    override func supportedEvents() -> [String]! {
+        return [AdropChannel.METHOD_BANNER_CHANNEL, AdropMethod.DID_CLICK_AD, AdropMethod.DID_FAIL_TO_RECEIVE_AD, AdropMethod.DID_RECEIVE_AD]
+    }
+    
 }
