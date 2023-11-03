@@ -68,7 +68,7 @@ class BannerEventEmitter: RCTEventEmitter {
         return true
     }
     override func supportedEvents() -> [String]! {
-        return [AdropChannel.METHOD_BANNER_CHANNEL, AdropMethod.DID_CLICK_AD, AdropMethod.DID_FAIL_TO_RECEIVE_AD, AdropMethod.DID_RECEIVE_AD]
+        return [AdropChannel.METHOD_BANNER_CHANNEL]
     }
     
 }
