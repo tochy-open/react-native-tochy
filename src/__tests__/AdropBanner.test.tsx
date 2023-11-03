@@ -1,5 +1,5 @@
 import AdropBannerController from '../banner/AdropBannerController'
-import { AdropAds, AdropErrorCode } from '../index'
+import { Adrop, AdropErrorCode } from '../index'
 import { act, fireEvent, render, screen } from '@testing-library/react-native'
 import AdropBanner from '../banner/AdropBanner'
 import React, { useState } from 'react'
@@ -92,7 +92,7 @@ describe('AdropBanner Test', () => {
     }
 
     beforeAll(() => {
-        AdropAds.initialize(false)
+        Adrop.initialize(false)
     })
 
     afterEach(() => {

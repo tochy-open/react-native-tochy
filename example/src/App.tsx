@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { StyleSheet, View, Button, Dimensions, Platform } from 'react-native'
 import {
-    AdropAds,
+    Adrop,
     AdropBanner,
     AdropBannerController,
 } from 'adrop-ads-react-native'
@@ -15,7 +15,7 @@ export default function App() {
     const [testBannerController, setTestBannerController] =
         useState<AdropBannerController>()
     useEffect(() => {
-        AdropAds.initialize(false)
+        Adrop.initialize(false)
     }, [])
 
     const unitId = useMemo(() => {

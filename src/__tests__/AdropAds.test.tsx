@@ -1,4 +1,4 @@
-import { AdropAds } from '../index'
+import { Adrop } from '../index'
 
 jest.mock('react-native', () => {
     const RN = jest.requireActual('react-native');
@@ -18,7 +18,7 @@ jest.mock('react-native', () => {
 
 describe('Adrop Test', () => {
     test('initialize production', () => {
-        AdropAds.initialize(true)
-        expect(AdropAds.initialize).toHaveBeenCalled()
+        Adrop.initialize(true)
+        expect(Adrop.initialize).toHaveBeenCalled()
     })
 })

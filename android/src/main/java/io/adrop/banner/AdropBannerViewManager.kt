@@ -17,10 +17,10 @@ import io.adrop.bridge.AdropMethod
 class AdropBannerViewManager(private val context: ReactApplicationContext) :
     SimpleViewManager<AdropBanner>(), AdropBannerListener {
 
-    override fun getName(): String = REACT_CLASS
+    override fun getName(): String = "AdropBannerView"
 
-    override fun createViewInstance(p0: ThemedReactContext): AdropBanner {
-        val banner = AdropBanner(p0, null)
+    override fun createViewInstance(context: ThemedReactContext): AdropBanner {
+        val banner = AdropBanner(context, null)
         banner.listener = this
         return banner
     }
@@ -54,6 +54,8 @@ class AdropBannerViewManager(private val context: ReactApplicationContext) :
     private fun sendEvent(viewTag: Int, method: String, value: String? = null) {
         val channel = AdropChannel.methodBannerChannelOf(viewTag)
 
+        val isMainThread = Looper.myLooper() == Looper.getMainLooper()
+
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
             .emit(AdropChannel.METHOD_BANNER_CHANNEL, Arguments.createMap().apply {
                 putString("method", method)
@@ -65,6 +67,5 @@ class AdropBannerViewManager(private val context: ReactApplicationContext) :
 
     companion object {
         private const val LOAD = "load"
-        private const val REACT_CLASS = "AdropBannerView"
     }
 }
