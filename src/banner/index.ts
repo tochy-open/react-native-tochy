@@ -1,4 +1,1 @@
-import AdropBanner from './AdropBanner'
-import AdropBannerController from './AdropBannerController'
-
-export { AdropBanner, AdropBannerController }
+export { default as AdropBanner } from './AdropBanner'

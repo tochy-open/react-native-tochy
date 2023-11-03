@@ -1,8 +1,7 @@
-import AdropBannerController from '../banner/AdropBannerController'
 import { Adrop, AdropErrorCode } from '../index'
 import { act, fireEvent, render, screen } from '@testing-library/react-native'
 import AdropBanner from '../banner/AdropBanner'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Button, DeviceEventEmitter, Text, View } from 'react-native'
 import { AdropChannel } from '../bridge/AdropChannel'
 import { AdropMethod } from '../bridge/AdropMethod'
@@ -11,15 +10,9 @@ import { AdropMethod } from '../bridge/AdropMethod'
 const Example: React.FC<{
     unitId: string, onClickLoad: () => void
 }> = ({ unitId, onClickLoad }) => {
-    const [controller, setController] = useState<AdropBannerController>()
+    const bannerRef = useRef(null)
     const [text, setText] = useState('')
-
-    const handleCreated = (_controller?: AdropBannerController) => {
-        act(() => {
-            setController(_controller)
-            setText('created')
-        })
-    }
+    const [autoLoad, setAutoLoad] = useState(true)
 
     const handleReceived = () => {
         act(() => {
@@ -41,19 +34,23 @@ const Example: React.FC<{
 
     const onClickLoadButton = () => {
         onClickLoad()
-        controller?.load()
+        bannerRef.current?.load()
     }
 
     return (
         <View>
+            <Button title={'enable auto load'} testID='enableAutoLoad' onPress={() => setAutoLoad(true)} />
+            <Button title={'disable auto load'} testID='enableAutoLoad' onPress={() => setAutoLoad(false)} />
             <Button title={'request ad'} testID='requestAd' onPress={onClickLoadButton} />
             <View testID='bannerWrapper'>
-                <AdropBanner style={{ width: 100, height: 80 }}
-                             unitId={unitId}
-                             onCreated={handleCreated}
-                             onAdReceived={handleReceived}
-                             onAdClicked={handleClicked}
-                             onAdFailedToReceive={handleFailedToReceive} />
+                <AdropBanner
+                    ref={bannerRef}
+                    style={{ width: 100, height: 80 }}
+                    unitId={unitId}
+                    autoLoad={autoLoad}
+                    onAdReceived={handleReceived}
+                    onAdClicked={handleClicked}
+                    onAdFailedToReceive={handleFailedToReceive} />
             </View>
             <Text testID='status'>{text}</Text>
         </View>

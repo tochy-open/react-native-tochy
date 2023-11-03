@@ -44,7 +44,6 @@ class AdropBannerViewWrapper: RCTView, AdropBannerDelegate {
         banner = AdropBanner(unitId: unitId as String)
         banner?.delegate = self
         self.addSubview(banner!)
-        self.addSubview(AdropBannerMock())
 
         sendEvent(method: AdropMethod.DID_CREATED_BANNER)
     }

@@ -25,18 +25,18 @@ class AdropBannerViewManager(private val context: ReactApplicationContext) :
         return banner
     }
 
-    override fun receiveCommand(root: AdropBanner, commandId: String?, args: ReadableArray?) {
-        super.receiveCommand(root, commandId, args)
+    override fun receiveCommand(banner: AdropBanner, command: String?, args: ReadableArray?) {
+        super.receiveCommand(banner, command, args)
 
-        when (commandId) {
-            LOAD -> root.load()
+        when (command) {
+            LOAD -> banner.load()
         }
     }
 
     @ReactProp(name = "unitId")
-    fun setUnitId(view: AdropBanner, unitId: String) {
-        view.setUnitId(unitId)
-        sendEvent(view.id, AdropMethod.DID_CREATED_AD_BANNER)
+    fun setUnitId(banner: AdropBanner, unitId: String) {
+        banner.setUnitId(unitId)
+        sendEvent(banner.id, AdropMethod.DID_CREATED_AD_BANNER)
     }
 
     override fun onAdClicked(banner: AdropBanner) {
@@ -53,8 +53,6 @@ class AdropBannerViewManager(private val context: ReactApplicationContext) :
 
     private fun sendEvent(viewTag: Int, method: String, value: String? = null) {
         val channel = AdropChannel.methodBannerChannelOf(viewTag)
-
-        val isMainThread = Looper.myLooper() == Looper.getMainLooper()
 
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
             .emit(AdropChannel.METHOD_BANNER_CHANNEL, Arguments.createMap().apply {

@@ -4,16 +4,14 @@ import { StyleSheet, View, Button, Dimensions, Platform } from 'react-native'
 import {
     Adrop,
     AdropBanner,
-    AdropBannerController,
 } from 'adrop-ads-react-native'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 
 export default function App() {
-    const [bannerController, setBannerController] =
-        useState<AdropBannerController>()
-    const [testBannerController, setTestBannerController] =
-        useState<AdropBannerController>()
+    const bannerRef = useRef(null)
+    const testBannerRef = useRef(null)
+
     useEffect(() => {
         Adrop.initialize(false)
     }, [])
@@ -29,32 +27,20 @@ export default function App() {
         }
     }, [Platform.OS])
 
-    const onAdBannerCreated = (controller?: AdropBannerController) => {
-        setBannerController(controller)
+    const loadBanner = () => bannerRef.current?.load()
+
+    const loadTestBanner = () => testBannerRef.current?.load()
+
+    const onAdClicked = (unitId: string) => {
+        console.log('banner clicked', unitId)
     }
 
-    const onAdTestBannerCreated = (controller?: AdropBannerController) => {
-        setTestBannerController(controller)
+    const onAdReceived = (unitId: string) => {
+        console.log('banner received', unitId)
     }
 
-    const loadBanner = () => {
-        bannerController?.load()
-    }
-
-    const loadTestBanner = () => {
-        testBannerController?.load()
-    }
-
-    const onAdClicked = () => {
-        console.log('banner clicked')
-    }
-
-    const onAdReceived = () => {
-        console.log('banner received')
-    }
-
-    const onAdFailedToReceive = () => {
-        console.log('banner onAdFailedToReceive')
+    const onAdFailedToReceive = (unitId: string, error?: string) => {
+        console.log('banner onAdFailedToReceive', unitId, error)
     }
 
     return (
@@ -67,12 +53,12 @@ export default function App() {
             <View>
                 <View style={{ width: '100%', height: 50 }}>
                     <AdropBanner
+                        ref={bannerRef}
                         unitId={unitId}
                         style={{
                             width: Dimensions.get('window').width,
                             height: 80,
                         }}
-                        onCreated={onAdBannerCreated}
                         onAdClicked={onAdClicked}
                         onAdReceived={onAdReceived}
                         onAdFailedToReceive={onAdFailedToReceive}
@@ -82,12 +68,12 @@ export default function App() {
 
                 <View style={{ width: '100%', height: 50 }}>
                     <AdropBanner
+                        ref={testBannerRef}
                         unitId={'ADROP_PUBLIC_TEST_UNIT_ID'}
                         style={{
                             width: Dimensions.get('window').width,
                             height: 80,
                         }}
-                        onCreated={onAdTestBannerCreated}
                         onAdClicked={onAdClicked}
                         onAdReceived={onAdReceived}
                         onAdFailedToReceive={onAdFailedToReceive}
