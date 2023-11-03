@@ -18,7 +18,7 @@ class AdropBannerViewManager: RCTViewManager {
         DispatchQueue.main.async {
             if let uiView =  self.bridge.uiManager.view(forReactTag: reactTag),
                let banner = uiView as? AdropBannerViewWrapper {
-                    banner.load()
+                banner.load()
             }
         }
     }
