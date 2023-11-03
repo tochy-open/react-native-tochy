@@ -5,6 +5,8 @@ Adrop Ads SDK for react-native
 
 Prerequisites
 -------------
+- React Native
+    - 0.72 or higher
 - Android
     - Android Studio 3.2 or higher
     - kotlin 1.7.10 or higher
@@ -44,7 +46,11 @@ Add "adrop-service.json" to the Runner of your Xcode project
 add this your ios Podfile
 
 ```
-config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+installer.pods_project.targets.each do |target|
+  target.build_configurations.each do |config|
+    config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+  end
+end
 ```
 
 ### 3. Initialize
