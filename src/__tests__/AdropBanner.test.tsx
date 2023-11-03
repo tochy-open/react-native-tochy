@@ -8,11 +8,10 @@ import { AdropMethod } from '../bridge/AdropMethod'
 
 
 const Example: React.FC<{
-    unitId: string, onClickLoad: () => void
-}> = ({ unitId, onClickLoad }) => {
+    unitId: string, onClickLoad: () => void, autoLoad?: boolean
+}> = ({ unitId, onClickLoad, autoLoad = true }) => {
     const bannerRef = useRef(null)
     const [text, setText] = useState('')
-    const [autoLoad, setAutoLoad] = useState(true)
 
     const handleReceived = () => {
         act(() => {
@@ -26,7 +25,7 @@ const Example: React.FC<{
         })
     }
 
-    const handleFailedToReceive = (error: string) => {
+    const handleFailedToReceive = (_: string, error: string) => {
         act(() => {
             setText(error)
         })
@@ -39,8 +38,6 @@ const Example: React.FC<{
 
     return (
         <View>
-            <Button title={'enable auto load'} testID='enableAutoLoad' onPress={() => setAutoLoad(true)} />
-            <Button title={'disable auto load'} testID='enableAutoLoad' onPress={() => setAutoLoad(false)} />
             <Button title={'request ad'} testID='requestAd' onPress={onClickLoadButton} />
             <View testID='bannerWrapper'>
                 <AdropBanner
@@ -96,20 +93,33 @@ describe('AdropBanner Test', () => {
         bannerChannel = AdropChannel.methodBannerChannelOf(++tag)
     })
 
-    test('banner created successfully', () => {
+    test('auto load successfully', () => {
         render(<Example unitId={unitId} onClickLoad={onClickMock} />)
         // onAdBannerCreated callback
         DeviceEventEmitter.emit(AdropChannel.methodBannerChannel, { method: AdropMethod.didCreatedBanner, tag })
+        DeviceEventEmitter.emit(AdropChannel.methodBannerChannel, { method: AdropMethod.didReceiveAd, channel: bannerChannel, tag })
 
-        checkStatus('created')
+        checkStatus('received')
     })
 
-    test('load before created banner', () => {
-        render(<Example unitId={unitId} onClickLoad={onClickMock} />)
+    test('disable auto load', () => {
+        render(<Example unitId={unitId} onClickLoad={onClickMock} autoLoad={false}/>)
+        DeviceEventEmitter.emit(AdropChannel.methodBannerChannel, { method: AdropMethod.didCreatedBanner, tag })
+
+        checkStatus('')
+    })
+
+    test('disable auto load, click reload', () => {
+        render(<Example unitId={unitId} onClickLoad={onClickMock} autoLoad={false}/>)
+        DeviceEventEmitter.emit(AdropChannel.methodBannerChannel, { method: AdropMethod.didCreatedBanner, tag })
+
+        checkStatus('')
 
         fireEvent.press(screen.getByTestId('requestAd'))
+        DeviceEventEmitter.emit(AdropChannel.methodBannerChannel, { method: AdropMethod.didReceiveAd, channel: bannerChannel, tag })
+
         expect(onClickMock).toHaveBeenCalled()
-        checkStatus('')
+        checkStatus('received')
     })
 
     test('banner when app has no campaigns (inactive from remote config) ', () => {
