@@ -8,7 +8,7 @@ RCT_EXTERN_METHOD(initialize:(BOOL)production
 
 + (BOOL)requiresMainQueueSetup
 {
-    return false;
+    return true;
 }
 
 
