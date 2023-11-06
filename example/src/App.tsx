@@ -1,12 +1,8 @@
 import * as React from 'react'
 
 import { StyleSheet, View, Button, Dimensions, Platform } from 'react-native'
-import {
-    Adrop,
-    AdropBanner,
-} from 'adrop-ads-react-native'
+import { Adrop, AdropBanner } from 'adrop-ads-react-native'
 import { useEffect, useMemo, useRef } from 'react'
-
 
 export default function App() {
     const bannerRef = useRef(null)
@@ -63,7 +59,6 @@ export default function App() {
                         onAdReceived={onAdReceived}
                         onAdFailedToReceive={onAdFailedToReceive}
                     />
-
                 </View>
 
                 <View style={{ width: '100%', height: 50 }}>
