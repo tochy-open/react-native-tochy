@@ -45,6 +45,10 @@ Add "adrop-service.json" to the Runner of your Xcode project
 
 add this your ios Podfile
 
+```shell
+use_frameworks!
+```
+...
 ```
 installer.pods_project.targets.each do |target|
   target.build_configurations.each do |config|
